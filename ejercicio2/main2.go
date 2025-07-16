@@ -2,33 +2,71 @@ package main
 
 import "fmt"
 
-func RingBuffer(datos []string, tamaño int) [5]string {
-	var buffer [5]string
-	writeIndex := 0
+const size = 5
 
-	for _, letra := range datos {
-		buffer[writeIndex] = letra
-		writeIndex = (writeIndex + 1) % tamaño
+type RingBuffer struct {
+	tail   int
+	head   int
+	count  int
+	buffer [size]int
+}
+
+func (rb *RingBuffer) append(value int) {
+	if rb.count == size {
+		fmt.Println("Buffer full. Overwriting the oldest value.")
+		rb.head = (rb.head + 1) % size
+	} else {
+		rb.count++
 	}
-	return buffer
+
+	rb.buffer[rb.tail] = value
+	rb.tail = (rb.tail + 1) % size
+}
+
+func (rb *RingBuffer) pop() int {
+	if rb.count == 0 {
+		fmt.Println("Buffer empty. Nothing to read.")
+		return -1
+	}
+
+	valor := rb.buffer[rb.head]
+	rb.head = (rb.head + 1) % size
+	rb.count--
+	return valor
+}
+
+func (rb *RingBuffer) PrintBuffer() {
+	fmt.Println("buffer content")
+	for i := 0; i < size; i++ {
+		fmt.Printf("[%d] ", rb.buffer[i])
+	}
+	fmt.Println()
+	fmt.Println("Head:", rb.head, "Tail:", rb.tail, "Count:", rb.count)
+}
+
+func (rb *RingBuffer) values() []int {
+	vals := make([]int, 0, rb.count)
+	for i, j := 0, rb.head; i < rb.count; i++ {
+		vals = append(vals, rb.buffer[j])
+		j = (j + 1) % size
+	}
+	return vals
 }
 
 func main() {
-	var datos []string
-	fmt.Println("Ingresa 10 letras una por una: ")
 
-	for i := 0; i < 10; i++ {
-		var letra string
-		fmt.Println("Letra: ", i+1)
-		fmt.Scanln(&letra)
-		datos = append(datos, letra)
+	var rb RingBuffer
+
+	for i := 1; i <= 7; i++ {
+		fmt.Println("inserting", i)
+		rb.append(i)
+		rb.PrintBuffer()
 	}
 
-	buffer := RingBuffer(datos, 5)
-
-	fmt.Println("Contenido final del Ring Buffer: ")
-	for i, val := range buffer {
-		fmt.Println(i, val)
-	}
+	fmt.Println("Taking out 2 values with pop()")
+	fmt.Println("Extracted value:", rb.pop())
+	rb.PrintBuffer()
+	fmt.Println("Extracted value:", rb.pop())
+	rb.PrintBuffer()
 
 }

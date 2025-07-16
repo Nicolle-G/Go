@@ -2,15 +2,15 @@ package main
 
 import "testing"
 
-func TestEspalindromo(t *testing.T) {
+func TestIspalindrome(t *testing.T) {
 
-	if EsPalindromo("oso") == false {
-		t.Errorf("error oso deberia ser palindromo")
+	if IsPalindrome("oño") == false {
+		t.Errorf("bug oño should be palindrome")
 
 	}
 
-	if EsPalindromo("casa") == true {
-		t.Errorf("erro casa NO deberia ser palindromo")
+	if IsPalindrome("house") == true {
+		t.Errorf("bug house NOT should be palindrome")
 	}
 
 }

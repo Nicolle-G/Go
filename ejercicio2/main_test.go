@@ -1,14 +1,42 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestRingBuffer(t *testing.T) {
-	datos := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"}
-	esperado := [5]string{"F", "G", "H", "I", "J"}
+func TestRingBufferInsertAndPop(t *testing.T) {
 
-	resultado := RingBuffer(datos, 5)
+	var rb RingBuffer
 
-	if resultado != esperado {
-		t.Errorf("Resultado incorrecto. Esperado: %v , Obtenido: %v ", esperado, resultado)
+	for i := 1; i <= 7; i++ {
+		rb.append(i)
 	}
+
+	got := rb.values()
+	want := []int{3, 4, 5, 6, 7}
+
+	if !equal(got, want) {
+		t.Errorf("Expected %v but it was obtained %v", want, got)
+	}
+
+	val1 := rb.pop()
+	val2 := rb.pop()
+
+	if val1 != 3 || val2 != 4 {
+		t.Errorf("Error in pop expected 3 and 4 and got %d y %d", val1, val2)
+	}
+
+}
+
+func equal(a, b []int) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
 }

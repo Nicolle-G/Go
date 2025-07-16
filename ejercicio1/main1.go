@@ -2,31 +2,30 @@ package main
 
 import "fmt"
 
-func EsPalindromo(palabra string) bool{
+func IsPalindrome(word string) bool {
 
-	letras := []byte(palabra) 
-    var invertida []byte 
+	letters := []rune(word)
+	var reversed []rune
 
-    for i  := len(letras) - 1; i >= 0; i -- {
-	invertida = append(invertida,  letras[i])
-    }
+	for i := len(letters) - 1; i >= 0; i-- {
+		reversed = append(reversed, letters[i])
+	}
 
-	return string(palabra) == string(invertida)
+	return string(word) == string(reversed)
 
 }
 
-func main()  {
+func main() {
 
-   var palabra string 
+	var word string
 
-   fmt.Println("Escribe una palabra: ") 
-   fmt.Scanln(&palabra) 
+	fmt.Println("Write a Word: ")
+	fmt.Scanln(&word)
 
-   if EsPalindromo(palabra){
-   fmt.Println("La palabra es un Palindromo.")
-   }else{
-	fmt.Println("La palabra No es un Palindromo.")
-   }
+	if IsPalindrome(word) {
+		fmt.Println("The word is a Palindrome")
+	} else {
+		fmt.Println("The word is Not a Palindrome.")
+	}
 
- 
 }
